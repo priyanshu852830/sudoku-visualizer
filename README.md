@@ -2,6 +2,10 @@
 
 An interactive Sudoku Solver and Visualizer built using HTML, CSS and JavaScript.
 
+## Live Demo
+
+🔗 https://priyanshu852830.github.io/sudoku-visualizer/
+
 ## Features
 
 * Generate Easy, Medium and Hard Sudoku puzzles
