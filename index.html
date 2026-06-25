@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sudoku Solver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h1>Sudoku Solver</h1>
+    </div>
+
+    <div class="main-container">
+
+        <div class="left-panel">
+
+            <div class="controls">
+
+                <h3>Controls</h3>
+
+                <label>Difficulty</label>
+                <br><br>
+
+                <select id="difficulty">
+                    <option>Easy</option>
+                    <option>Medium</option>
+                    <option>Hard</option>
+                </select>
+
+                <br><br>
+                
+                <button id="generateBtn">Generate Puzzle</button>
+                <button id="solutionBtn">Show Solution</button>
+                <button id="customBtn">Custom Input Mode</button>
+                <button id="solveBtn">Solve Puzzle</button>
+                <button id="pauseBtn">Pause</button>
+                <button id="clearBtn">Clear Board</button>
+
+                <br><br>
+
+                <label>Speed</label>
+
+                <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    value="50"
+                    id="speedSlider"
+                >
+
+            </div>
+
+        </div>
+
+        <div class="center-panel">
+
+            <div id="board"></div>
+
+        </div>
+
+        <div class="right-panel">
+
+            <div class="analytics">
+
+                <h3>Analytics</h3>
+
+                <p>Recursive Calls: <span id="calls">0</span></p>
+
+                <p>Backtracks: <span id="backtracks">0</span></p>
+
+                <p>Solve Time: <span id="time">0 ms</span></p>
+
+                <p>Difficulty: <span id="difficultyText">None</span></p>
+
+                <p>
+                    Predicted Difficulty:
+                   <span id="predictedDifficulty">
+                       Unknown
+                   </span>
+                   </p>
+
+            </div>
+
+            <div class="chart-box">
+
+    
+
+    <div class="legend">
+
+        <p>🟦 Exploring Cell</p>
+
+        <p>🟩 Correct Placement</p>
+
+        <p>🟥 Backtracking</p>
+
+        <p>⚫ Fixed Puzzle Number</p>
+
+        <p>⚪ Empty Cell</p>
+
+    </div>
+
+</div>
+
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
