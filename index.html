@@ -27,6 +27,25 @@
                     <option>Medium</option>
                     <option>Hard</option>
                 </select>
+                <br><br>
+
+                <label>Algorithm</label>
+
+                <br><br>
+
+                <select id="algorithmSelect">
+
+                <option value="bt">
+                    Standard Backtracking
+               </option>
+
+               <option value="mrv">
+                    Optimized Backtracking (MRV)
+               </option>
+
+               </select>
+
+               <br><br>
 
                 <br><br>
                 
@@ -63,22 +82,36 @@
 
             <div class="analytics">
 
-                <h3>Analytics</h3>
+            <h3>Analytics</h3>
 
-                <p>Recursive Calls: <span id="calls">0</span></p>
+            <p>Algorithm:
+            <span id="algorithm">
+            None
+            </span>
+            </p>
 
-                <p>Backtracks: <span id="backtracks">0</span></p>
+            <p>Recursive Calls:
+            <span id="calls">0</span>
+            </p>
 
-                <p>Solve Time: <span id="time">0 ms</span></p>
+            <p>Backtracks:
+            <span id="backtracks">0</span>
+            </p>
 
-                <p>Difficulty: <span id="difficultyText">None</span></p>
+            <p>Solve Time:
+            <span id="time">0 ms</span>
+            </p>
 
-                <p>
-                    Predicted Difficulty:
-                   <span id="predictedDifficulty">
-                       Unknown
-                   </span>
-                   </p>
+            <p>Difficulty:
+            <span id="difficultyText">None</span>
+            </p>
+
+            <p>
+            Predicted Difficulty:
+            <span id="predictedDifficulty">
+            Unknown
+            </span>
+            </p>    
 
             </div>
 

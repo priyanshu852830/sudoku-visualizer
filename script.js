@@ -76,6 +76,7 @@ const easyPuzzles = [
 [0,4,0,0,5,0,0,3,6],
 [7,0,3,0,1,8,0,0,0]
 ]
+
 ];
 
 const mediumPuzzles = [
@@ -160,6 +161,15 @@ const hardPuzzles = [
 
 function generatePuzzle(){
 
+    recursiveCalls = 0;
+    backtracks = 0;
+
+    document.getElementById("calls").innerText = 0;
+    document.getElementById("backtracks").innerText = 0;
+    document.getElementById("time").innerText = "0 ms";
+    document.getElementById("algorithm").innerText = "None";
+    document.getElementById("predictedDifficulty").innerText = "Unknown";
+
     let difficulty =
         document.getElementById("difficulty").value;
 
@@ -184,6 +194,7 @@ function generatePuzzle(){
         for(let j=0;j<9;j++){
 
             cells[i][j].style.background = "white";
+            cells[i][j].style.color = "black";
 
             if(puzzle[i][j] === 0)
                 cells[i][j].value = "";
@@ -248,7 +259,64 @@ function isValid(grid,row,col,num){
     return true;
 }
 
-async function solve(grid){
+function findEmptyCell(grid){
+
+    for(let row=0;row<9;row++){
+
+        for(let col=0;col<9;col++){
+
+            if(grid[row][col]===0)
+                return [row,col];
+
+        }
+
+    }
+
+    return null;
+
+}
+
+function findBestCell(grid){
+
+    let best = null;
+    let bestCount = 10;
+
+    for(let row=0;row<9;row++){
+
+        for(let col=0;col<9;col++){
+
+            if(grid[row][col]!==0)
+                continue;
+
+            let cnt = 0;
+
+            for(let num=1;num<=9;num++){
+
+                if(isValid(grid,row,col,num))
+                    cnt++;
+            }
+
+            if(cnt<bestCount){
+
+                bestCount = cnt;
+
+                best = [row,col];
+
+                if(cnt==1)
+                    return best;
+            }
+        }
+    }
+
+    return best;
+}
+
+async function solveMRV(grid){
+
+    document
+    .getElementById("algorithm")
+    .innerText =
+    "Optimized Backtracking (MRV)";
 
     let speed =
     Math.max(
@@ -257,77 +325,138 @@ async function solve(grid){
             (101 -
             document.getElementById("speedSlider").value)
             / 10
-    )
-);
+        )
+    );
+
     recursiveCalls++;
 
-    document.getElementById("calls")
-        .innerText = recursiveCalls;
+    document
+    .getElementById("calls")
+    .innerText = recursiveCalls;
 
-    for(let row=0;row<9;row++){
+    let cell = findBestCell(grid);
 
-        for(let col=0;col<9;col++){
+    if(cell==null)
+        return true;
 
-            if(grid[row][col]===0){
+    let row = cell[0];
+    let col = cell[1];
 
-                for(let num=1;num<=9;num++){
+    for(let num=1;num<=9;num++){
 
-                    if(
-                        isValid(
-                            grid,
-                            row,
-                            col,
-                            num
-                        )
-                    ){
+        if(isValid(grid,row,col,num)){
 
-                        grid[row][col] = num;
+            grid[row][col]=num;
 
-                        cells[row][col].value = num;
-                        cells[row][col].style.color =
-                            "blue";
-                        cells[row][col].style.background =
-                            "#cfe2ff";
+            cells[row][col].value=num;
+            cells[row][col].style.color="blue";
+            cells[row][col].style.background="#cfe2ff";
 
-                        await checkPause();
-                        await sleep(speed);
+            await checkPause();
+            await sleep(speed);
 
-                        if(await solve(grid)){
-                            cells[row][col].style.background =
-                                "#d4edda";
-                            return true;
-                        }
+            if(await solveMRV(grid)){
 
-                        grid[row][col] = 0;
+                cells[row][col].style.background="#d4edda";
 
-                        cells[row][col].style.background =
-                            "#f8d7da";
-
-                        await sleep(speed);
-
-                        cells[row][col].value = "";
-                        cells[row][col].style.background =
-                            "white";
-                        backtracks++;
-
-                        document
-                        .getElementById(
-                            "backtracks"
-                        )
-                        .innerText =
-                            backtracks;
-
-                        await checkPause();
-                        await sleep(speed);
-                    }
-                }
-
-                return false;
+                return true;
             }
+
+            grid[row][col]=0;
+
+            cells[row][col].style.background="#f8d7da";
+
+            await sleep(speed);
+
+            cells[row][col].value="";
+            cells[row][col].style.background="white";
+
+            backtracks++;
+
+            document
+            .getElementById("backtracks")
+            .innerText=backtracks;
+
+            await checkPause();
+            await sleep(speed);
         }
     }
 
-    return true;
+    return false;
+}
+
+async function solveBacktracking(grid){
+
+    document
+    .getElementById("algorithm")
+    .innerText =
+    "Standard Backtracking";
+
+    let speed =
+    Math.max(
+        0,
+        Math.floor(
+            (101 -
+            document.getElementById("speedSlider").value)
+            / 10
+        )
+    );
+
+    recursiveCalls++;
+
+    document
+    .getElementById("calls")
+    .innerText = recursiveCalls;
+
+    let cell = findEmptyCell(grid);
+
+    if(cell==null)
+        return true;
+
+    let row = cell[0];
+    let col = cell[1];
+
+    for(let num=1;num<=9;num++){
+
+        if(isValid(grid,row,col,num)){
+
+            grid[row][col]=num;
+
+            cells[row][col].value=num;
+            cells[row][col].style.color="blue";
+            cells[row][col].style.background="#cfe2ff";
+
+            await checkPause();
+            await sleep(speed);
+
+            if(await solveBacktracking(grid)){
+
+                cells[row][col].style.background="#d4edda";
+
+                return true;
+            }
+
+            grid[row][col]=0;
+
+            cells[row][col].style.background="#f8d7da";
+
+            await sleep(speed);
+
+            cells[row][col].value="";
+            cells[row][col].style.background="white";
+
+            backtracks++;
+
+            document
+            .getElementById("backtracks")
+            .innerText=backtracks;
+
+            await checkPause();
+            await sleep(speed);
+        }
+    }
+
+    return false;
 }
 
 async function solveSudoku(){
@@ -339,7 +468,21 @@ async function solveSudoku(){
 
     let grid = getBoard();
 
-    await solve(grid);
+    let algo =
+    document
+    .getElementById("algorithmSelect")
+    .value;
+
+    if(algo=="bt"){
+
+       await solveBacktracking(grid);
+
+    }
+    else{
+
+       await solveMRV(grid);
+
+    }
 
     for(let i=0;i<9;i++){
 
